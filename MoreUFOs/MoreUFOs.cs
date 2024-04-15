@@ -16,7 +16,7 @@ namespace MoreUFOs
 		public override string ID => "M_MoreUFOs";
 		public override string Name => "More UFOs";
 		public override string Author => "M-";
-		public override string Version => "1.0.0";
+		public override string Version => "0.0.1";
 
 		internal static MoreUFOs Mod;
 
