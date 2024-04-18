@@ -50,7 +50,7 @@ namespace MoreUFOs.Components
 				return;
 			this.fedo.roadHeightOffset = 10f;
 			this.fedo.highspeed = Mathf.Lerp(1f, 250f, Mathf.Clamp01(num / 250f));
-			foreach (Collider collider in Physics.OverlapSphere(this.transform.position, 25f))
+			foreach (Collider collider in Physics.OverlapSphere(transform.position, 25f))
 			{
 				if (collider.attachedRigidbody != null)
 				{

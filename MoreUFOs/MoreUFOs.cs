@@ -26,6 +26,7 @@ namespace MoreUFOs
 		{
 			typeof(Trans),
 			typeof(Red),
+			typeof(Mothership),
 		};
 		internal int MaxIndex = -1;
 
