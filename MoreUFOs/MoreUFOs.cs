@@ -27,6 +27,7 @@ namespace MoreUFOs
 			typeof(Trans),
 			typeof(Red),
 			typeof(Mothership),
+			typeof(FluidStealer),
 		};
 		internal int MaxIndex = -1;
 
