@@ -5,8 +5,6 @@ using MoreUFOs.Modules;
 using Logger = MoreUFOs.Modules.Logger;
 using MoreUFOs.Components;
 using System.Linq;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace MoreUFOs
 {
