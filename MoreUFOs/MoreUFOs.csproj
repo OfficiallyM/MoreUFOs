@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
     <Company>M-</Company>
+    <AssemblyName>M_$(MSBuildProjectName)</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
