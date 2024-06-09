@@ -62,7 +62,7 @@ namespace MoreUFOs.Components
 
 		public void FixedUpdate()
 		{
-			Collider[] colliders = Physics.OverlapSphere(transform.position, 200f);
+			Collider[] colliders = Physics.OverlapSphere(transform.position, 250f);
 			foreach (Collider collider in colliders)
 			{
 				if (collider.transform.root.gameObject == gameObject) continue;
