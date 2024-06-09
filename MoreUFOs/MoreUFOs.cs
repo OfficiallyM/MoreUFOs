@@ -1,7 +1,6 @@
 ﻿using System;
 using TLDLoader;
 using UnityEngine;
-using MoreUFOs.Modules;
 using Logger = MoreUFOs.Modules.Logger;
 using MoreUFOs.Components;
 using System.Linq;
@@ -14,7 +13,7 @@ namespace MoreUFOs
 		public override string ID => "M_MoreUFOs";
 		public override string Name => "More UFOs";
 		public override string Author => "M-";
-		public override string Version => "1.0.0";
+		public override string Version => "1.1.0";
 
 		internal static MoreUFOs Mod;
 
@@ -26,6 +25,7 @@ namespace MoreUFOs
 			typeof(Red),
 			typeof(Mothership),
 			typeof(FluidStealer),
+			typeof(Rustifier),
 		};
 		internal int MaxIndex = -1;
 
