@@ -60,21 +60,5 @@ namespace MoreUFOs.Components
 				}
 			}
 		}
-
-		protected override void OnCollisionEnter(Collision col)
-		{
-			base.OnCollisionEnter(col);
-
-			if (col.collider.transform.root == mainscript.M.player.transform.root)
-				mainscript.M.player.transform.Translate(0.0f, int.MinValue, 0.0f);
-			tosaveitemscript component;
-			if (col.collider.gameObject.TryGetComponent<tosaveitemscript>(out component))
-			{
-				component.removeFromMemory = true;
-				Object.Destroy(component.gameObject);
-			}
-			else
-				col.collider.enabled = false;
-		}
 	}
 }
