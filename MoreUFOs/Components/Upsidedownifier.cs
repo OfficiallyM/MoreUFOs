@@ -57,6 +57,7 @@ namespace MoreUFOs.Components
 				GameObject root = collider.transform.root.gameObject;
 
 				if (root.GetComponent<tosaveitemscript>() == null) continue;
+				if (root.GetComponent<buildingscript>() != null) continue;
 				if (affected.Contains(root)) continue;
 
 				root.transform.Rotate(Vector3.left, 180);
