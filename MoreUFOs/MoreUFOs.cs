@@ -27,6 +27,7 @@ namespace MoreUFOs
 			typeof(FluidStealer),
 			typeof(Rustifier),
 			typeof(PartDropper),
+			typeof(Upsidedownifier),
 		};
 		internal int MaxIndex = -1;
 
