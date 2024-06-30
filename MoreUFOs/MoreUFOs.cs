@@ -29,6 +29,7 @@ namespace MoreUFOs
 			typeof(PartDropper),
 			typeof(Upsidedownifier),
 			typeof(Teleporter),
+			typeof(Sandstorms),
 		};
 		internal int MaxIndex = -1;
 
