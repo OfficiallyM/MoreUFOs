@@ -6,12 +6,12 @@ namespace MoreUFOs.Components
 	[DisallowMultipleComponent]
 	internal class Red : UFOType
 	{
-		private fedoscript fedo;
+		private fedoscript _fedo;
 
 		public void Start()
 		{
 			Logger.Log($"Red has spawned", Logger.LogLevel.Debug);
-			fedo = gameObject.GetComponent<fedoscript>();
+			_fedo = gameObject.GetComponent<fedoscript>();
 
 			// Set material emission colour.
 			foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
@@ -34,14 +34,14 @@ namespace MoreUFOs.Components
 
 		public void Update()
 		{
-			if (!enabled || fedo == null)
+			if (!enabled || _fedo == null)
 				return;
-			this.fedo.roadHeightOffset = 75f;
+			this._fedo.roadHeightOffset = 75f;
 			float num = Distance2D(transform.position, mainscript.M.player.transform.position);
 			if ((double)num >= 250.0)
 				return;
-			this.fedo.roadHeightOffset = 10f;
-			this.fedo.highspeed = Mathf.Lerp(1f, 250f, Mathf.Clamp01(num / 250f));
+			this._fedo.roadHeightOffset = 10f;
+			this._fedo.highspeed = Mathf.Lerp(1f, 250f, Mathf.Clamp01(num / 250f));
 			foreach (Collider collider in Physics.OverlapSphere(transform.position, 25f))
 			{
 				if (collider.attachedRigidbody != null)

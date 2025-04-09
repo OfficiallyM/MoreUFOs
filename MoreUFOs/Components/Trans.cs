@@ -6,13 +6,13 @@ namespace MoreUFOs.Components
 	[DisallowMultipleComponent]
 	internal class Trans : UFOType
 	{
-		private fedoscript fedo;
-		private bool swapped = false;
+		private fedoscript _fedo;
+		private bool _swapped = false;
 
 		public void Start()
 		{
 			Logger.Log($"Trans has spawned", Logger.LogLevel.Debug);
-			fedo = gameObject.GetComponent<fedoscript>();
+			_fedo = gameObject.GetComponent<fedoscript>();
 
 			// Set material emission colour.
 			foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
@@ -42,15 +42,15 @@ namespace MoreUFOs.Components
 
 		public void Update()
 		{
-			if (!enabled || fedo == null) return;
+			if (!enabled || _fedo == null) return;
 
-			this.fedo.roadHeightOffset = 65f;
+			this._fedo.roadHeightOffset = 65f;
 			float num = Distance2D(transform.position, mainscript.M.player.transform.position);
 			if ((double)num >= 150.0)
 				return;
-			this.fedo.roadHeightOffset = 15f;
-			this.fedo.highspeed = Mathf.Lerp(1f, 150f, Mathf.Clamp01(num / 150f));
-			if (swapped) return;
+			this._fedo.roadHeightOffset = 15f;
+			this._fedo.highspeed = Mathf.Lerp(1f, 150f, Mathf.Clamp01(num / 150f));
+			if (_swapped) return;
 			if (Distance2D(transform.position, mainscript.M.player.transform.position) <= 50)
 			{
 				playermodeloutfitscript outfit = mainscript.M.player.outfit;
@@ -61,7 +61,7 @@ namespace MoreUFOs.Components
 				mainscript.M.player.outfit.selectedCharacter = newChar;
 				outfit.refresh = true;
 				outfit.SetRandom(false);
-				swapped = true;
+				_swapped = true;
 			}
 		}
 	}

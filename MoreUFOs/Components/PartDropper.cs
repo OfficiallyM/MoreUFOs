@@ -7,13 +7,13 @@ namespace MoreUFOs.Components
 	[DisallowMultipleComponent]
 	internal class PartDropper : UFOType
 	{
-		private fedoscript fedo;
-		private List<GameObject> affected = new List<GameObject>();
+		private fedoscript _fedo;
+		private List<GameObject> _affected = new List<GameObject>();
 
 		public void Start()
 		{
 			Logger.Log($"PartDropper has spawned", Logger.LogLevel.Debug);
-			fedo = gameObject.GetComponent<fedoscript>();
+			_fedo = gameObject.GetComponent<fedoscript>();
 			Color color = new Color(3 / 255f, 65 / 255f, 219 / 255f);
 
 			// Set material emission colour.
@@ -36,14 +36,14 @@ namespace MoreUFOs.Components
 
 		public void Update()
 		{
-			if (!enabled || fedo == null)
+			if (!enabled || _fedo == null)
 				return;
-			this.fedo.roadHeightOffset = 55f;
+			this._fedo.roadHeightOffset = 55f;
 			float num = Distance2D(transform.position, mainscript.M.player.transform.position);
 			if ((double)num >= 250.0)
 				return;
-			this.fedo.roadHeightOffset = 17f;
-			this.fedo.highspeed = Mathf.Lerp(1f, 250f, Mathf.Clamp01(num / 250f));
+			this._fedo.roadHeightOffset = 17f;
+			this._fedo.highspeed = Mathf.Lerp(1f, 250f, Mathf.Clamp01(num / 250f));
 			foreach (Collider collider in Physics.OverlapSphere(transform.position, 40f))
 			{
 				GameObject root = collider.transform.root.gameObject;
@@ -53,14 +53,14 @@ namespace MoreUFOs.Components
 					if (slot.part == null) continue;
 
 					GameObject part = slot.part.gameObject;
-					if (affected.Contains(part)) continue;
+					if (_affected.Contains(part)) continue;
 
 					// 1/4 chance of dropping the part.
 					System.Random random = new System.Random();
 					if (random.Next(4) == 0)
 						slot.part.FallOFf();
 
-					affected.Add(part);
+					_affected.Add(part);
 				}
 			}
 		}

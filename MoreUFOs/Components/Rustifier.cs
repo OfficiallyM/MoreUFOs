@@ -6,12 +6,12 @@ namespace MoreUFOs.Components
 	[DisallowMultipleComponent]
 	internal class Rustifier : UFOType
 	{
-		private fedoscript fedo;
+		private fedoscript _fedo;
 
 		public void Start()
 		{
 			Logger.Log($"Rustifier has spawned", Logger.LogLevel.Debug);
-			fedo = gameObject.GetComponent<fedoscript>();
+			_fedo = gameObject.GetComponent<fedoscript>();
 			Color color = new Color(48 / 255f, 15 / 255f, 0 / 255f);
 
 			// Set material emission colour.
@@ -34,14 +34,14 @@ namespace MoreUFOs.Components
 
 		public void Update()
 		{
-			if (!enabled || fedo == null)
+			if (!enabled || _fedo == null)
 				return;
-			this.fedo.roadHeightOffset = 55f;
+			this._fedo.roadHeightOffset = 55f;
 			float num = Distance2D(transform.position, mainscript.M.player.transform.position);
 			if ((double)num >= 250.0)
 				return;
-			this.fedo.roadHeightOffset = 20f;
-			this.fedo.highspeed = Mathf.Lerp(1f, 250f, Mathf.Clamp01(num / 250f));
+			this._fedo.roadHeightOffset = 20f;
+			this._fedo.highspeed = Mathf.Lerp(1f, 250f, Mathf.Clamp01(num / 250f));
 			foreach (Collider collider in Physics.OverlapSphere(transform.position, 100f))
 			{
 				GameObject root = collider.transform.root.gameObject;

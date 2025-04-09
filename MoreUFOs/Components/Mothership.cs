@@ -8,13 +8,13 @@ namespace MoreUFOs.Components
 	[DisallowMultipleComponent]
 	internal class Mothership : UFOType
 	{
-		private fedoscript fedo;
-		private List<Collider> affected = new List<Collider>();
+		private fedoscript _fedo;
+		private List<Collider> _affected = new List<Collider>();
 
 		public void Start()
 		{
 			Logger.Log($"Mothership has spawned", Logger.LogLevel.Debug);
-			fedo = gameObject.GetComponent<fedoscript>();
+			_fedo = gameObject.GetComponent<fedoscript>();
 
 			// Set material emission colour.
 			foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
@@ -40,14 +40,14 @@ namespace MoreUFOs.Components
 
 		public void Update()
 		{
-			if (!enabled || fedo == null) return;
+			if (!enabled || _fedo == null) return;
 
-			this.fedo.roadHeightOffset = 150f;
+			this._fedo.roadHeightOffset = 150f;
 			float num = Distance2D(transform.position, mainscript.M.player.transform.position);
 			if ((double)num >= 500.0)
 				return;
-			this.fedo.roadHeightOffset = 100f;
-			this.fedo.highspeed = Mathf.Lerp(1f, 500f, Mathf.Clamp01(num / 500f));
+			this._fedo.roadHeightOffset = 100f;
+			this._fedo.highspeed = Mathf.Lerp(1f, 500f, Mathf.Clamp01(num / 500f));
 		}
 
 		public void FixedUpdate()
@@ -57,16 +57,16 @@ namespace MoreUFOs.Components
 			{
 				if (collider.transform.root.gameObject == gameObject) continue;
 
-				if (collider.attachedRigidbody != null && !affected.Contains(collider))
+				if (collider.attachedRigidbody != null && !_affected.Contains(collider))
 				{
 					collider.attachedRigidbody.useGravity = false;
 					collider.attachedRigidbody.AddForce(750f / collider.attachedRigidbody.mass * Vector3.up, ForceMode.Acceleration);
-					affected.Add(collider);
+					_affected.Add(collider);
 				}
 			}
 
 			var excludedIds = new HashSet<int>(colliders.Select(c => c.GetInstanceID()));
-			var enableGravity = affected.Where(c => !excludedIds.Contains(c.GetInstanceID()));
+			var enableGravity = _affected.Where(c => !excludedIds.Contains(c.GetInstanceID()));
 
 			List<Collider> remove = new List<Collider>();
 			foreach (Collider collider in enableGravity)
@@ -80,7 +80,7 @@ namespace MoreUFOs.Components
 			}
 
 			foreach (Collider collider in remove)
-				affected.Remove(collider);
+				_affected.Remove(collider);
 		}
 	}
 }

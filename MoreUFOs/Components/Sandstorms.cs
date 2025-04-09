@@ -6,14 +6,14 @@ namespace MoreUFOs.Components
 	[DisallowMultipleComponent]
 	internal class Sandstorms : UFOType
 	{
-		private fedoscript fedo;
-		private float timePassed = 0;
-		private temporaryTurnOffGeneration temp;
+		private fedoscript _fedo;
+		private float _timePassed = 0;
+		private temporaryTurnOffGeneration _temp;
 
 		public void Start()
 		{
 			Logger.Log($"Sandstorms has spawned", Logger.LogLevel.Debug);
-			fedo = gameObject.GetComponent<fedoscript>();
+			_fedo = gameObject.GetComponent<fedoscript>();
 			Color color = new Color(73 / 255f, 73 / 255f, 73 / 255f);
 
 			// Set material emission colour.
@@ -33,27 +33,27 @@ namespace MoreUFOs.Components
 			// Set EMP range.
 			gameObject.GetComponent<empscript>().range = 300f;
 
-			temp = mainscript.M.menu.GetComponentInChildren<temporaryTurnOffGeneration>();
+			_temp = mainscript.M.menu.GetComponentInChildren<temporaryTurnOffGeneration>();
 		}
 
 		public void Update()
 		{
-			if (temp == null) return;    
+			if (_temp == null) return;    
 
-            if (!enabled || fedo == null)
+            if (!enabled || _fedo == null)
 				return;
-			fedo.roadHeightOffset = 100f;
+			_fedo.roadHeightOffset = 100f;
 			float num = Distance2D(transform.position, mainscript.M.player.transform.position);
 			if ((double)num >= 600.0)
 				return;
-			fedo.roadHeightOffset = 20f;
-			fedo.highspeed = Mathf.Lerp(100f, 400f, Mathf.Clamp01(num / 400f));
+			_fedo.roadHeightOffset = 20f;
+			_fedo.highspeed = Mathf.Lerp(100f, 400f, Mathf.Clamp01(num / 400f));
 
-			timePassed += Time.deltaTime;
-			if (timePassed > 7f)
+			_timePassed += Time.deltaTime;
+			if (_timePassed > 7f)
 			{
-				temp.sandstormspawn.SpawnAt(fedo.transform.position);
-				timePassed = 0;
+				_temp.sandstormspawn.SpawnAt(_fedo.transform.position);
+				_timePassed = 0;
 			}
 		}
 	}

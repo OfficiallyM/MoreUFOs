@@ -8,13 +8,13 @@ namespace MoreUFOs.Components
 	[DisallowMultipleComponent]
 	internal class Teleporter : UFOType
 	{
-		private fedoscript fedo;
-		private List<GameObject> affected = new List<GameObject>();
+		private fedoscript _fedo;
+		private List<GameObject> _affected = new List<GameObject>();
 
 		public void Start()
 		{
 			Logger.Log($"Teleporter has spawned", Logger.LogLevel.Debug);
-			fedo = gameObject.GetComponent<fedoscript>();
+			_fedo = gameObject.GetComponent<fedoscript>();
 			Color color = new Color(41 / 255f, 0 / 255f, 63 / 255f);
 
 			// Set material emission colour.
@@ -37,14 +37,14 @@ namespace MoreUFOs.Components
 
 		public void Update()
 		{
-			if (!enabled || fedo == null)
+			if (!enabled || _fedo == null)
 				return;
-			this.fedo.roadHeightOffset = 55f;
+			this._fedo.roadHeightOffset = 55f;
 			float num = Distance2D(transform.position, mainscript.M.player.transform.position);
 			if ((double)num >= 400.0)
 				return;
-			this.fedo.roadHeightOffset = 30f;
-			this.fedo.highspeed = Mathf.Lerp(150f, 400f, Mathf.Clamp01(num / 400f));
+			this._fedo.roadHeightOffset = 30f;
+			this._fedo.highspeed = Mathf.Lerp(150f, 400f, Mathf.Clamp01(num / 400f));
 			foreach (Collider collider in Physics.OverlapSphere(transform.position, 75f))
 			{
 				GameObject root = collider.transform.root.gameObject;
@@ -52,7 +52,7 @@ namespace MoreUFOs.Components
 				tosaveitemscript save = root.GetComponent<tosaveitemscript>();
 				if (save == null) continue;
 				if (root.GetComponent<buildingscript>() != null) continue;
-				if (affected.Contains(root)) continue;
+				if (_affected.Contains(root)) continue;
 
 				Vector3[] directions = new Vector3[]
 				{
@@ -68,7 +68,7 @@ namespace MoreUFOs.Components
 				Vector3 direction = directions[random];
 				root.transform.position += direction * UnityEngine.Random.Range(2f, 20f);
 
-				affected.Add(root);
+				_affected.Add(root);
 			}
 		}
 	}

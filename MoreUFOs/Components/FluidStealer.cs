@@ -8,13 +8,13 @@ namespace MoreUFOs.Components
 	[DisallowMultipleComponent]
 	internal class FluidStealer : UFOType
 	{
-		private fedoscript fedo;
-		private List<GameObject> affected = new List<GameObject>();
+		private fedoscript _fedo;
+		private List<GameObject> _affected = new List<GameObject>();
 
 		public void Start()
 		{
 			Logger.Log($"FluidStealer has spawned", Logger.LogLevel.Debug);
-			fedo = gameObject.GetComponent<fedoscript>();
+			_fedo = gameObject.GetComponent<fedoscript>();
 
 			// Set material emission colour.
 			foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
@@ -37,20 +37,20 @@ namespace MoreUFOs.Components
 
 		public void Update()
 		{
-			if (!enabled || fedo == null) return;
+			if (!enabled || _fedo == null) return;
 
-			this.fedo.roadHeightOffset = 75f;
+			this._fedo.roadHeightOffset = 75f;
 			float num = Distance2D(transform.position, mainscript.M.player.transform.position);
 			if ((double)num >= 250.0)
 				return;
-			this.fedo.roadHeightOffset = 20f;
-			this.fedo.highspeed = Mathf.Lerp(1f, 250f, Mathf.Clamp01(num / 250f));
+			this._fedo.roadHeightOffset = 20f;
+			this._fedo.highspeed = Mathf.Lerp(1f, 250f, Mathf.Clamp01(num / 250f));
 
 			foreach (Collider collider in Physics.OverlapSphere(transform.position, 80f))
 			{
 				GameObject gameObject = collider.gameObject;
 				
-				if (affected.Contains(gameObject)) continue;
+				if (_affected.Contains(gameObject)) continue;
 
 				tankscript[] tanks = gameObject.GetComponentsInChildren<tankscript>().Distinct().ToArray();
 				foreach (tankscript tank in tanks)
@@ -67,7 +67,7 @@ namespace MoreUFOs.Components
 						tank.F.ChangeOne(Random.Range(0.1f, fluid.amount), fluid.type);
 					}
 				}
-				affected.Add(gameObject);
+				_affected.Add(gameObject);
 			}
 		}
 	}

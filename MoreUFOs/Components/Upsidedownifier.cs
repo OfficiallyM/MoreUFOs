@@ -7,13 +7,13 @@ namespace MoreUFOs.Components
 	[DisallowMultipleComponent]
 	internal class Upsidedownifier : UFOType
 	{
-		private fedoscript fedo;
-		private List<GameObject> affected = new List<GameObject>();
+		private fedoscript _fedo;
+		private List<GameObject> _affected = new List<GameObject>();
 
 		public void Start()
 		{
 			Logger.Log($"Upsidedownifier has spawned", Logger.LogLevel.Debug);
-			fedo = gameObject.GetComponent<fedoscript>();
+			_fedo = gameObject.GetComponent<fedoscript>();
 			Color color = new Color(120 / 255f, 252 / 255f, 5 / 255f);
 
 			// Set material emission colour.
@@ -36,24 +36,24 @@ namespace MoreUFOs.Components
 
 		public void Update()
 		{
-			if (!enabled || fedo == null)
+			if (!enabled || _fedo == null)
 				return;
-			this.fedo.roadHeightOffset = 55f;
+			this._fedo.roadHeightOffset = 55f;
 			float num = Distance2D(transform.position, mainscript.M.player.transform.position);
 			if ((double)num >= 400.0)
 				return;
-			this.fedo.roadHeightOffset = 20f;
-			this.fedo.highspeed = Mathf.Lerp(200f, 400f, Mathf.Clamp01(num / 400f));
+			this._fedo.roadHeightOffset = 20f;
+			this._fedo.highspeed = Mathf.Lerp(200f, 400f, Mathf.Clamp01(num / 400f));
 			foreach (Collider collider in Physics.OverlapSphere(transform.position, 40f))
 			{
 				GameObject root = collider.transform.root.gameObject;
 
 				if (root.GetComponent<tosaveitemscript>() == null) continue;
 				if (root.GetComponent<buildingscript>() != null) continue;
-				if (affected.Contains(root)) continue;
+				if (_affected.Contains(root)) continue;
 
 				root.transform.Rotate(Vector3.left, 180);
-				affected.Add(root);
+				_affected.Add(root);
 			}
 		}
 	}
