@@ -3,41 +3,33 @@ using Logger = MoreUFOs.Modules.Logger;
 
 namespace MoreUFOs.Components
 {
+	[DisallowMultipleComponent]
 	internal class Rustifier : UFOType
 	{
 		private fedoscript fedo;
 
-		protected override void Start()
+		public void Start()
 		{
-			base.Start();
-			if (typeof(Rustifier) == MoreUFOs.ForceSpawn || (MoreUFOs.ForceSpawn == null && Random.Range(0, MoreUFOs.Mod.MaxIndex) == index))
-			{
-				Logger.Log($"Rustifier has spawned", Logger.LogLevel.Debug);
-				fedo = gameObject.GetComponent<fedoscript>();
-				Color color = new Color(48 / 255f, 15 / 255f, 0 / 255f);
+			Logger.Log($"Rustifier has spawned", Logger.LogLevel.Debug);
+			fedo = gameObject.GetComponent<fedoscript>();
+			Color color = new Color(48 / 255f, 15 / 255f, 0 / 255f);
 
-				// Set material emission colour.
-				foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+			// Set material emission colour.
+			foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+			{
+				if (!renderer.gameObject.name.ToLower().Contains("body"))
 				{
-					if (!renderer.gameObject.name.ToLower().Contains("body"))
-					{
-						renderer.material.color = color;
-						renderer.material.SetColor("_EmissionColor", color);
-					}
+					renderer.material.color = color;
+					renderer.material.SetColor("_EmissionColor", color);
 				}
-
-				// Set light colour.
-				Light light = gameObject.GetComponentInChildren<Light>();
-				light.color = color;
-
-				// Disable EMP.
-				gameObject.GetComponent<empscript>().range = 0f;
 			}
-			else
-			{
-				enabled = false;
-				Destroy(this);
-			}
+
+			// Set light colour.
+			Light light = gameObject.GetComponentInChildren<Light>();
+			light.color = color;
+
+			// Disable EMP.
+			gameObject.GetComponent<empscript>().range = 0f;
 		}
 
 		public void Update()

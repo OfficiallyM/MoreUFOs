@@ -1,53 +1,43 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
-using UnityEngine;
+﻿using UnityEngine;
 using Logger = MoreUFOs.Modules.Logger;
 
 namespace MoreUFOs.Components
 {
+	[DisallowMultipleComponent]
 	internal class Trans : UFOType
 	{
 		private fedoscript fedo;
 		private bool swapped = false;
 
-		protected override void Start()
+		public void Start()
 		{
-			base.Start();
-			if (typeof(Trans) == MoreUFOs.ForceSpawn || (MoreUFOs.ForceSpawn == null && Random.Range(0, MoreUFOs.Mod.MaxIndex) == index))
-			{
-				Logger.Log($"Trans has spawned", Logger.LogLevel.Debug);
-				fedo = gameObject.GetComponent<fedoscript>();
+			Logger.Log($"Trans has spawned", Logger.LogLevel.Debug);
+			fedo = gameObject.GetComponent<fedoscript>();
 
-				// Set material emission colour.
-				foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+			// Set material emission colour.
+			foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+			{
+				string name = renderer.name.ToLower();
+				switch (name)
 				{
-					string name = renderer.name.ToLower();
-					switch (name)
-					{
-						case "cabin":
-							renderer.material.color = new Color(0.96078f, 0.66275f, 0.72157f);
-							renderer.material.SetColor("_EmissionColor", new Color(0.96078f, 0.66275f, 0.72157f));
-							break;
-						case "lights":
-							renderer.material.color = Color.white;
-							renderer.material.SetColor("_EmissionColor", Color.white);
-							break;
-					}
+					case "cabin":
+						renderer.material.color = new Color(0.96078f, 0.66275f, 0.72157f);
+						renderer.material.SetColor("_EmissionColor", new Color(0.96078f, 0.66275f, 0.72157f));
+						break;
+					case "lights":
+						renderer.material.color = Color.white;
+						renderer.material.SetColor("_EmissionColor", Color.white);
+						break;
 				}
-
-				// Set light colour.
-				Light light = gameObject.GetComponentInChildren<Light>();
-				light.color = new Color(0.35686f, 0.80784f, 0.98039f);
-				light.range *= 1.5f;
-
-				// Disable EMP.
-				gameObject.GetComponent<empscript>().range = 0;
 			}
-			else
-			{
-				enabled = false;
-				Destroy(this);
-			}
+
+			// Set light colour.
+			Light light = gameObject.GetComponentInChildren<Light>();
+			light.color = new Color(0.35686f, 0.80784f, 0.98039f);
+			light.range *= 1.5f;
+
+			// Disable EMP.
+			gameObject.GetComponent<empscript>().range = 0;
 		}
 
 		public void Update()

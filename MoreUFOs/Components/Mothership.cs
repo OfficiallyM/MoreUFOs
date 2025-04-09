@@ -1,51 +1,41 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using Logger = MoreUFOs.Modules.Logger;
 
 namespace MoreUFOs.Components
 {
+	[DisallowMultipleComponent]
 	internal class Mothership : UFOType
 	{
 		private fedoscript fedo;
 		private List<Collider> affected = new List<Collider>();
 
-		protected override void Start()
+		public void Start()
 		{
-			base.Start();
-			if (typeof(Mothership) == MoreUFOs.ForceSpawn || (MoreUFOs.ForceSpawn == null && Random.Range(0, MoreUFOs.Mod.MaxIndex) == index))
-			{
-				Logger.Log($"Mothership has spawned", Logger.LogLevel.Debug);
-				fedo = gameObject.GetComponent<fedoscript>();
+			Logger.Log($"Mothership has spawned", Logger.LogLevel.Debug);
+			fedo = gameObject.GetComponent<fedoscript>();
 
-				// Set material emission colour.
-				foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+			// Set material emission colour.
+			foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+			{
+				if (!renderer.name.ToLower().Contains("body"))
 				{
-					if (!renderer.name.ToLower().Contains("body"))
-					{
-						renderer.material.color = Color.magenta;
-						renderer.material.SetColor("_EmissionColor", Color.magenta);
-					}
+					renderer.material.color = Color.magenta;
+					renderer.material.SetColor("_EmissionColor", Color.magenta);
 				}
-
-				// Set light colour.
-				Light light = gameObject.GetComponentInChildren<Light>();
-				light.color = Color.magenta;
-				light.range *= 10f;
-
-				// Set scale.
-				transform.localScale *= 20f;
-
-				// Set EMP range.
-				gameObject.GetComponent<empscript>().range = 500f;
 			}
-			else
-			{
-				enabled = false;
-				Destroy(this);
-			}
+
+			// Set light colour.
+			Light light = gameObject.GetComponentInChildren<Light>();
+			light.color = Color.magenta;
+			light.range *= 10f;
+
+			// Set scale.
+			transform.localScale *= 20f;
+
+			// Set EMP range.
+			gameObject.GetComponent<empscript>().range = 500f;
 		}
 
 		public void Update()

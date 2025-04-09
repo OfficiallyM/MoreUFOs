@@ -4,42 +4,34 @@ using Logger = MoreUFOs.Modules.Logger;
 
 namespace MoreUFOs.Components
 {
+	[DisallowMultipleComponent]
 	internal class PartDropper : UFOType
 	{
 		private fedoscript fedo;
 		private List<GameObject> affected = new List<GameObject>();
 
-		protected override void Start()
+		public void Start()
 		{
-			base.Start();
-			if (typeof(PartDropper) == MoreUFOs.ForceSpawn || (MoreUFOs.ForceSpawn == null && Random.Range(0, MoreUFOs.Mod.MaxIndex) == index))
-			{
-				Logger.Log($"PartDropper has spawned", Logger.LogLevel.Debug);
-				fedo = gameObject.GetComponent<fedoscript>();
-				Color color = new Color(3 / 255f, 65 / 255f, 219 / 255f);
+			Logger.Log($"PartDropper has spawned", Logger.LogLevel.Debug);
+			fedo = gameObject.GetComponent<fedoscript>();
+			Color color = new Color(3 / 255f, 65 / 255f, 219 / 255f);
 
-				// Set material emission colour.
-				foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+			// Set material emission colour.
+			foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+			{
+				if (!renderer.gameObject.name.ToLower().Contains("body"))
 				{
-					if (!renderer.gameObject.name.ToLower().Contains("body"))
-					{
-						renderer.material.color = color;
-						renderer.material.SetColor("_EmissionColor", color);
-					}
+					renderer.material.color = color;
+					renderer.material.SetColor("_EmissionColor", color);
 				}
-
-				// Set light colour.
-				Light light = gameObject.GetComponentInChildren<Light>();
-				light.color = color;
-
-				// Set EMP range.
-				gameObject.GetComponent<empscript>().range = 800f;
 			}
-			else
-			{
-				enabled = false;
-				Destroy(this);
-			}
+
+			// Set light colour.
+			Light light = gameObject.GetComponentInChildren<Light>();
+			light.color = color;
+
+			// Set EMP range.
+			gameObject.GetComponent<empscript>().range = 800f;
 		}
 
 		public void Update()

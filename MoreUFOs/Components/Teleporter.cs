@@ -5,42 +5,34 @@ using Logger = MoreUFOs.Modules.Logger;
 
 namespace MoreUFOs.Components
 {
+	[DisallowMultipleComponent]
 	internal class Teleporter : UFOType
 	{
 		private fedoscript fedo;
 		private List<GameObject> affected = new List<GameObject>();
 
-		protected override void Start()
+		public void Start()
 		{
-			base.Start();
-			if (typeof(Teleporter) == MoreUFOs.ForceSpawn || (MoreUFOs.ForceSpawn == null && UnityEngine.Random.Range(0, MoreUFOs.Mod.MaxIndex) == index))
-			{
-				Logger.Log($"Teleporter has spawned", Logger.LogLevel.Debug);
-				fedo = gameObject.GetComponent<fedoscript>();
-				Color color = new Color(41 / 255f, 0 / 255f, 63 / 255f);
+			Logger.Log($"Teleporter has spawned", Logger.LogLevel.Debug);
+			fedo = gameObject.GetComponent<fedoscript>();
+			Color color = new Color(41 / 255f, 0 / 255f, 63 / 255f);
 
-				// Set material emission colour.
-				foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+			// Set material emission colour.
+			foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+			{
+				if (!renderer.gameObject.name.ToLower().Contains("body"))
 				{
-					if (!renderer.gameObject.name.ToLower().Contains("body"))
-					{
-						renderer.material.color = color;
-						renderer.material.SetColor("_EmissionColor", color);
-					}
+					renderer.material.color = color;
+					renderer.material.SetColor("_EmissionColor", color);
 				}
-
-				// Set light colour.
-				Light light = gameObject.GetComponentInChildren<Light>();
-				light.color = color;
-
-				// Set EMP range.
-				gameObject.GetComponent<empscript>().range = 400f;
 			}
-			else
-			{
-				enabled = false;
-				Destroy(this);
-			}
+
+			// Set light colour.
+			Light light = gameObject.GetComponentInChildren<Light>();
+			light.color = color;
+
+			// Set EMP range.
+			gameObject.GetComponent<empscript>().range = 400f;
 		}
 
 		public void Update()

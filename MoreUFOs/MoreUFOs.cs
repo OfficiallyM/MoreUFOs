@@ -13,7 +13,7 @@ namespace MoreUFOs
 		public override string ID => "M_MoreUFOs";
 		public override string Name => "More UFOs";
 		public override string Author => "M-";
-		public override string Version => "1.2.0";
+		public override string Version => "1.3.0";
 
 		internal static MoreUFOs Mod;
 
@@ -65,8 +65,7 @@ namespace MoreUFOs
 
 			// Add components to the UFO spawn prefab.
 			GameObject fedoSpawn = mainscript.M.player.gameObject.GetComponent<fedospawnscript>().prefab;
-			foreach (Type type in UFOTypes)
-				fedoSpawn.AddComponent(type);
+			fedoSpawn.AddComponent<UFOSelector>();
 		}
 
 		public override void OnGUI()

@@ -4,42 +4,34 @@ using Logger = MoreUFOs.Modules.Logger;
 
 namespace MoreUFOs.Components
 {
+	[DisallowMultipleComponent]
 	internal class Upsidedownifier : UFOType
 	{
 		private fedoscript fedo;
 		private List<GameObject> affected = new List<GameObject>();
 
-		protected override void Start()
+		public void Start()
 		{
-			base.Start();
-			if (typeof(Upsidedownifier) == MoreUFOs.ForceSpawn || (MoreUFOs.ForceSpawn == null && Random.Range(0, MoreUFOs.Mod.MaxIndex) == index))
-			{
-				Logger.Log($"Upsidedownifier has spawned", Logger.LogLevel.Debug);
-				fedo = gameObject.GetComponent<fedoscript>();
-				Color color = new Color(120 / 255f, 252 / 255f, 5 / 255f);
+			Logger.Log($"Upsidedownifier has spawned", Logger.LogLevel.Debug);
+			fedo = gameObject.GetComponent<fedoscript>();
+			Color color = new Color(120 / 255f, 252 / 255f, 5 / 255f);
 
-				// Set material emission colour.
-				foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+			// Set material emission colour.
+			foreach (MeshRenderer renderer in gameObject.GetComponentsInChildren<MeshRenderer>())
+			{
+				if (!renderer.gameObject.name.ToLower().Contains("body"))
 				{
-					if (!renderer.gameObject.name.ToLower().Contains("body"))
-					{
-						renderer.material.color = color;
-						renderer.material.SetColor("_EmissionColor", color);
-					}
+					renderer.material.color = color;
+					renderer.material.SetColor("_EmissionColor", color);
 				}
-
-				// Set light colour.
-				Light light = gameObject.GetComponentInChildren<Light>();
-				light.color = color;
-
-				// Set EMP range.
-				gameObject.GetComponent<empscript>().range = 300f;
 			}
-			else
-			{
-				enabled = false;
-				Destroy(this);
-			}
+
+			// Set light colour.
+			Light light = gameObject.GetComponentInChildren<Light>();
+			light.color = color;
+
+			// Set EMP range.
+			gameObject.GetComponent<empscript>().range = 300f;
 		}
 
 		public void Update()
